@@ -2307,14 +2307,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1996460261}
     m_Modifications:
-    - target: {fileID: 2037909553528516979, guid: 8ff7b2d9acfbe314fab5775a97889783, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2037909554238427274, guid: 8ff7b2d9acfbe314fab5775a97889783, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2037909554743438915, guid: 8ff7b2d9acfbe314fab5775a97889783, type: 3}
       propertyPath: m_Name
       value: (0, 0)
@@ -2362,10 +2354,6 @@ PrefabInstance:
     - target: {fileID: 2037909554743438972, guid: 8ff7b2d9acfbe314fab5775a97889783, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2037909554743438972, guid: 8ff7b2d9acfbe314fab5775a97889783, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ff7b2d9acfbe314fab5775a97889783, type: 3}

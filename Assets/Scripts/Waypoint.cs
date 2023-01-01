@@ -6,8 +6,16 @@ public class Waypoint : MonoBehaviour
 {
     [SerializeField] bool isPlaceble;
     [SerializeField] GameObject towerPrefab;
-    // Start is called before the first frame update
-    private void OnMouseDown()
+    public bool IsPlaceable
+    {
+        get
+        {
+            return isPlaceble;
+        }
+    }
+    
+
+    void OnMouseDown()
     {
         if(isPlaceble)
         {
