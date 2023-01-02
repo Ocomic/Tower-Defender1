@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Waypoint : MonoBehaviour
 {
     [SerializeField] bool isPlaceble;
-    [SerializeField] GameObject towerPrefab;
+    [SerializeField] Tower towerPrefab;
     public bool IsPlaceable
     {
         get
@@ -19,8 +20,8 @@ public class Waypoint : MonoBehaviour
     {
         if(isPlaceble)
         {
-            Instantiate(towerPrefab, transform.position, Quaternion.identity);
-            isPlaceble = false;
+            bool isPlaced = towerPrefab.CreateTower(towerPrefab, transform.position);                     
+            isPlaceble = !isPlaced;
         }
         
     }

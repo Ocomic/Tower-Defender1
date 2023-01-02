@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: isPlaceble
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1539518096264956555, guid: 8ff7b2d9acfbe314fab5775a97889783, type: 3}
+      propertyPath: isPlaceble
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2037909554238427275, guid: 8ff7b2d9acfbe314fab5775a97889783, type: 3}
       propertyPath: m_fontColor.r
       value: 1
