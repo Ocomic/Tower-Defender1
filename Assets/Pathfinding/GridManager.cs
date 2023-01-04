@@ -1,21 +1,29 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] NodeClass node;
-    // Start is called before the first frame update
-    void Start()
-    {
-        Debug.Log(node.coordinates);
-        Debug.Log(node.isWalkable);
+    [SerializeField] Vector2Int gridSize;
+    Dictionary<Vector2Int, NodeClass> grid = new Dictionary<Vector2Int, NodeClass>();
 
+    private void Awake()
+    {
+        createGrid();
+        
     }
 
-    // Update is called once per frame
-    void Update()
+    private void createGrid()
     {
-        
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                Vector2Int coordinates = new Vector2Int(x, y);
+                grid.Add(coordinates, new NodeClass(coordinates, true));
+                Debug.Log(grid[coordinates].coordinates +" = " + grid[coordinates].isWalkable);
+            }
+        }
     }
 }
