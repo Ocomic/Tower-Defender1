@@ -5,10 +5,20 @@ using UnityEngine;
 
 public class PathFInder : MonoBehaviour
 {
-    [SerializeField] NodeClass currentSearchNode;
+    
+    [SerializeField] Vector2Int startCoordinates;
+    [SerializeField] Vector2Int destinationCoordinates;
+
+    NodeClass startNode;
+    NodeClass destinationNode;
+    NodeClass currentSearchNode;
+
+    Queue<NodeClass> frontier = new Queue<NodeClass>();
+    Dictionary<Vector2Int, NodeClass> reached = new Dictionary<Vector2Int, NodeClass>();
+
     Vector2Int[] directions = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
     GridManager gridManager;
-    Dictionary<Vector2Int, NodeClass> grid;
+    Dictionary<Vector2Int, NodeClass> grid = new Dictionary<Vector2Int, NodeClass>();
 
     private void Awake()
     {
@@ -17,10 +27,15 @@ public class PathFInder : MonoBehaviour
         {
             grid = gridManager.Grid;
         }
+
+        startNode = new NodeClass(startCoordinates, true);
+        destinationNode = new NodeClass(destinationCoordinates, true);
+
+
     }
     void Start()
     {
-        ExploreNeighbors();
+        BreadthFirstSearch();
     }
 
     private void ExploreNeighbors()
@@ -35,9 +50,36 @@ public class PathFInder : MonoBehaviour
             {
                 neighbors.Add(grid[neighborCoords]);
 
-                //remove after testing
-                grid[neighborCoords].isExplored = true;
-                grid[currentSearchNode.coordinates].isPath = true;
+                
+            }
+        }
+
+        foreach(NodeClass neighbor in neighbors)
+        {
+            if(!reached.ContainsKey(neighbor.coordinates) && neighbor.isWalkable)
+            {
+                reached.Add(neighbor.coordinates, neighbor);
+                frontier.Enqueue(neighbor);
+            }
+        }
+
+    }
+
+    void BreadthFirstSearch()
+    {
+        bool isRunning = true;
+
+        frontier.Enqueue(startNode);
+        reached.Add(startCoordinates, startNode);
+
+        while(frontier.Count > 0 && isRunning)
+        {
+            currentSearchNode = frontier.Dequeue();
+            currentSearchNode.isExplored = true;
+            ExploreNeighbors();
+            if(currentSearchNode.coordinates == destinationCoordinates)
+            {
+                isRunning = false;
             }
         }
 
