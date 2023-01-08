@@ -6,6 +6,9 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     [SerializeField] Vector2Int gridSize;
+    [Tooltip("World Grid Size - Should match UnityEditor snap settings.")]
+    [SerializeField] int unityGridSize = 10;
+    public int UnityGridSize { get { return unityGridSize; } }
     Dictionary<Vector2Int, NodeClass> grid = new Dictionary<Vector2Int, NodeClass>();
     public Dictionary<Vector2Int, NodeClass> Grid { get { return grid; } }
 
@@ -24,6 +27,44 @@ public class GridManager : MonoBehaviour
         
         return null;
     }
+
+    public void BlockNode(Vector2Int coordinates)
+    {
+        if(grid.ContainsKey(coordinates))
+        {
+            grid[coordinates].isWalkable = false;
+        }
+    }
+
+    public void ResetNodes()
+    {
+        foreach(KeyValuePair<Vector2Int, NodeClass> entry in grid)
+        {
+            entry.Value.connectedTo = null;
+            entry.Value.isExplored = false;
+            entry.Value.isPath = false;
+        }
+    }
+
+    public Vector2Int GetCoordinatesFromPosition(Vector3 position)
+    {
+        Vector2Int coordinates= new Vector2Int();
+        coordinates.x = Mathf.RoundToInt(position.x / unityGridSize);
+        coordinates.y = Mathf.RoundToInt(position.y / unityGridSize);
+        return coordinates;
+    
+    }
+
+    public Vector3 GetPositionFromCoordinates(Vector2Int coordinates)
+    {
+        Vector3Int position = new Vector3Int();
+        position.x = coordinates.x * unityGridSize;
+        position.z = coordinates.y * unityGridSize;
+        
+        return position;
+
+    }
+
 
     private void createGrid()
     {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PathFInder : MonoBehaviour
+public class PathFinder : MonoBehaviour
 {
     
     [SerializeField] Vector2Int startCoordinates;
@@ -36,8 +36,15 @@ public class PathFInder : MonoBehaviour
         startNode = gridManager.Grid[startCoordinates];
         destinationNode = gridManager.Grid[destinationCoordinates];
 
+        GetNewPath();
+
+    }
+
+    public List<NodeClass> GetNewPath()
+    {
+        gridManager.ResetNodes();
         BreadthFirstSearch();
-        BuildPath();
+        return BuildPath();
     }
 
     private void ExploreNeighbors()
@@ -70,6 +77,9 @@ public class PathFInder : MonoBehaviour
 
     void BreadthFirstSearch()
     {
+        frontier.Clear();
+        reached.Clear();
+
         bool isRunning = true;
 
         frontier.Enqueue(startNode);
@@ -106,5 +116,27 @@ public class PathFInder : MonoBehaviour
         path.Reverse();
 
         return path;
+    }
+
+    public bool WillBlockPath(Vector2Int coordinates)
+    {
+        if(grid.ContainsKey(coordinates)) 
+        {
+            bool previousState = grid[coordinates].isWalkable;
+
+            grid[coordinates].isWalkable = false;
+            List<NodeClass> newpath = GetNewPath();
+            grid[coordinates].isWalkable= previousState;
+
+            if(newpath.Count <= 1) 
+            {
+                GetNewPath();
+                return true;
+            }
+
+            return false;
+        }
+
+        return false; 
     }
 }
