@@ -28,14 +28,16 @@ public class PathFInder : MonoBehaviour
             grid = gridManager.Grid;
         }
 
-        startNode = new NodeClass(startCoordinates, true);
-        destinationNode = new NodeClass(destinationCoordinates, true);
-
+        
 
     }
     void Start()
     {
+        startNode = gridManager.Grid[startCoordinates];
+        destinationNode = gridManager.Grid[destinationCoordinates];
+
         BreadthFirstSearch();
+        BuildPath();
     }
 
     private void ExploreNeighbors()
@@ -58,6 +60,7 @@ public class PathFInder : MonoBehaviour
         {
             if(!reached.ContainsKey(neighbor.coordinates) && neighbor.isWalkable)
             {
+                neighbor.connectedTo = currentSearchNode;
                 reached.Add(neighbor.coordinates, neighbor);
                 frontier.Enqueue(neighbor);
             }
@@ -83,5 +86,25 @@ public class PathFInder : MonoBehaviour
             }
         }
 
+    }
+
+    List<NodeClass>BuildPath()
+    {
+        List<NodeClass> path = new List<NodeClass>();
+        NodeClass currentNode = destinationNode;
+
+        path.Add(currentNode);
+        currentNode.isPath= true;
+
+        while(currentNode.connectedTo!= null) 
+        { 
+            currentNode = currentNode.connectedTo;
+            path.Add(currentNode);
+            currentNode.isPath = true;
+        }
+
+        path.Reverse();
+
+        return path;
     }
 }
