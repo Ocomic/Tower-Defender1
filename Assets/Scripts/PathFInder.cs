@@ -32,6 +32,7 @@ public class PathFinder : MonoBehaviour
             grid = gridManager.Grid;
             startNode = grid[startCoordinates];
             destinationNode = grid[destinationCoordinates];
+            
         }
     }
 
@@ -81,6 +82,7 @@ public class PathFinder : MonoBehaviour
     {
         startNode.isWalkable = true;
         destinationNode.isWalkable = true;
+              
 
         frontier.Clear();
         reached.Clear();
