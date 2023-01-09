@@ -5,8 +5,9 @@ using UnityEngine.UIElements;
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField] bool isPlaceble;
+    
     [SerializeField] Tower towerPrefab;
+    [SerializeField] bool isPlaceble;
     public bool IsPlaceable { get { return isPlaceble; } }
 
     GridManager gridManager;
@@ -15,16 +16,17 @@ public class Tile : MonoBehaviour
 
     void Awake()
     {
-      gridManager = FindObjectOfType<GridManager>();
-        pathfinder = FindObjectOfType<PathFinder>(); 
+        gridManager = FindObjectOfType<GridManager>();
+        pathfinder = FindObjectOfType<PathFinder>();
     }
 
     void Start()
     {
-        if(gridManager != null)
+        if (gridManager != null)
         {
             coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
-            if(!isPlaceble) 
+
+            if (!isPlaceble)
             {
                 gridManager.BlockNode(coordinates);
             }
@@ -33,12 +35,15 @@ public class Tile : MonoBehaviour
 
     void OnMouseDown()
     {
-        if(gridManager.GetNode(coordinates).isWalkable && !pathfinder.WillBlockPath(coordinates))
+        if (gridManager.GetNode(coordinates).isWalkable && !pathfinder.WillBlockPath(coordinates))
         {
-            bool isPlaced = towerPrefab.CreateTower(towerPrefab, transform.position);                     
-            isPlaceble = !isPlaced;
-            gridManager.BlockNode(coordinates);
+            bool isSuccessful = towerPrefab.CreateTower(towerPrefab, transform.position);
+            if (isSuccessful)
+            {
+                gridManager.BlockNode(coordinates);
+                pathfinder.NotifyReceivers();
+            }
         }
-        
     }
+
 }

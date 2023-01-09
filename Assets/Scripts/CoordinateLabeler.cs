@@ -17,24 +17,24 @@ public class CoordinateLabeler : MonoBehaviour
     TextMeshPro label;
     Vector2Int coordinates = new Vector2Int();
     GridManager gridManager;
-    
 
-    private void Awake()
+
+    void Awake()
     {
         gridManager = FindObjectOfType<GridManager>();
         label = GetComponent<TextMeshPro>();
         label.enabled = false;
-        
+
         DisplayCoordinates();
     }
-    // Update is called once per frame
+
     void Update()
     {
         if (!Application.isPlaying)
         {
             DisplayCoordinates();
             UpdateObjectName();
-            label.enabled=true;
+            label.enabled = true;
         }
 
         SetLabelColor();
@@ -43,7 +43,7 @@ public class CoordinateLabeler : MonoBehaviour
 
     void ToggleLabels()
     {
-        if(Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             label.enabled = !label.IsActive();
         }
@@ -51,12 +51,13 @@ public class CoordinateLabeler : MonoBehaviour
 
     void SetLabelColor()
     {
-        if(gridManager == null) { return; }
-        NodeClass node = gridManager.GetNode(coordinates);
+        if (gridManager == null) { return; }
+
+        Node node = gridManager.GetNode(coordinates);
 
         if (node == null) { return; }
 
-        if(!node.isWalkable)
+        if (!node.isWalkable)
         {
             label.color = blockedColor;
         }
@@ -64,7 +65,7 @@ public class CoordinateLabeler : MonoBehaviour
         {
             label.color = pathColor;
         }
-        else if (!node.isExplored)
+        else if (node.isExplored)
         {
             label.color = exploredColor;
         }
@@ -72,13 +73,11 @@ public class CoordinateLabeler : MonoBehaviour
         {
             label.color = defaultColor;
         }
-
-
     }
 
     void DisplayCoordinates()
     {
-        if(gridManager == null) { return; }
+        if (gridManager == null) { return; }
 
         coordinates.x = Mathf.RoundToInt(transform.parent.position.x / gridManager.UnityGridSize);
         coordinates.y = Mathf.RoundToInt(transform.parent.position.z / gridManager.UnityGridSize);
@@ -88,8 +87,7 @@ public class CoordinateLabeler : MonoBehaviour
 
     void UpdateObjectName()
     {
-       transform.parent.name = coordinates.ToString();
+        transform.parent.name = coordinates.ToString();
     }
-
-
 }
+

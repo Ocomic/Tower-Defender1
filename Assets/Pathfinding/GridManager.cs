@@ -6,11 +6,12 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     [SerializeField] Vector2Int gridSize;
+
     [Tooltip("World Grid Size - Should match UnityEditor snap settings.")]
     [SerializeField] int unityGridSize = 10;
     public int UnityGridSize { get { return unityGridSize; } }
-    Dictionary<Vector2Int, NodeClass> grid = new Dictionary<Vector2Int, NodeClass>();
-    public Dictionary<Vector2Int, NodeClass> Grid { get { return grid; } }
+    Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
+    public Dictionary<Vector2Int, Node> Grid { get { return grid; } }
 
     private void Awake()
     {
@@ -18,7 +19,7 @@ public class GridManager : MonoBehaviour
         
     }
 
-    public NodeClass GetNode(Vector2Int coordinates)
+    public Node GetNode(Vector2Int coordinates)
     {
         if(grid.ContainsKey(coordinates))
         {
@@ -38,7 +39,7 @@ public class GridManager : MonoBehaviour
 
     public void ResetNodes()
     {
-        foreach(KeyValuePair<Vector2Int, NodeClass> entry in grid)
+        foreach(KeyValuePair<Vector2Int, Node> entry in grid)
         {
             entry.Value.connectedTo = null;
             entry.Value.isExplored = false;
@@ -50,14 +51,14 @@ public class GridManager : MonoBehaviour
     {
         Vector2Int coordinates= new Vector2Int();
         coordinates.x = Mathf.RoundToInt(position.x / unityGridSize);
-        coordinates.y = Mathf.RoundToInt(position.y / unityGridSize);
+        coordinates.y = Mathf.RoundToInt(position.z / unityGridSize);
         return coordinates;
     
     }
 
     public Vector3 GetPositionFromCoordinates(Vector2Int coordinates)
     {
-        Vector3Int position = new Vector3Int();
+        Vector3 position = new Vector3();
         position.x = coordinates.x * unityGridSize;
         position.z = coordinates.y * unityGridSize;
         
@@ -73,7 +74,7 @@ public class GridManager : MonoBehaviour
             for (int y = 0; y < gridSize.y; y++)
             {
                 Vector2Int coordinates = new Vector2Int(x, y);
-                grid.Add(coordinates, new NodeClass(coordinates, true));
+                grid.Add(coordinates, new Node(coordinates, true));
                 
             }
         }
