@@ -17,9 +17,9 @@ public class EnemyMover : MonoBehaviour
 
     void OnEnable()
     {
-        FindPath();
         ReturnToStart();
-        StartCoroutine(FollowPath());
+        RecalculatePath(true);
+        
     }
 
     private void Awake()
@@ -30,11 +30,24 @@ public class EnemyMover : MonoBehaviour
     }
    
 
-    void FindPath()
+    void RecalculatePath(bool resetPath)
     {
+        Vector2Int coordinates = new Vector2Int();
+
+        if(resetPath ) 
+        {
+            coordinates = pathfinder.StartCoordinates;
+        }
+        else
+        {
+            coordinates = gridmanager.GetCoordinatesFromPosition(transform.position);
+        }
+
+        StopAllCoroutines();
         path.Clear();
-        path = pathfinder.GetNewPath();
-        
+        path = pathfinder.GetNewPath(coordinates);
+        StartCoroutine(FollowPath());
+
     }
 
     void ReturnToStart()
@@ -50,10 +63,10 @@ public class EnemyMover : MonoBehaviour
 
     IEnumerator FollowPath()
     {
-        for(int i = 0; i< path.Count; i++)
+        for(int i = 1; i< path.Count; i++)
         {
             Vector3 startPosition = transform.position;
-            Vector3 endPosition = gridmanager.GetPositionFromCoordinates(pathfinder.DestinationCoordinates);
+            Vector3 endPosition = gridmanager.GetPositionFromCoordinates(path[i].coordinates);
             float travelPercentage = 0f;
 
             transform.LookAt(endPosition);
